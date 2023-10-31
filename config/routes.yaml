@@ -3,3 +3,15 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+author_list:
+    path: /authors
+    controller: App\Controller\AuthorController::listAuthors
+
+add:
+    path: /add
+    controller: App\Controller\AuthorController::add
+
+author_create:
+    path: /authors/create
+    controller: App\Controller\AuthorController::createAuthor
