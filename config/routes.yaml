@@ -15,3 +15,11 @@ add:
 author_create:
     path: /authors/create
     controller: App\Controller\AuthorController::createAuthor
+
+book_add:
+    path: /books/add
+    controller: App\Controller\BookController::addBook
+
+book_list:
+    path: /books
+    controller: App\Controller\BookController::fetchBooks

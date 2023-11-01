@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use App\Entity\Book;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,16 +61,32 @@ class AuthorController extends AbstractController
         ]);
     }
 
-    #[Route('/remove/{id}', name: 'remove')]
-    public function remove(AuthorRepository $repo,$id, EntityManagerInterface $em):Response{
-        $s=$repo->find($id);
-        $em->remove($s);
-        $em->flush();
-    
-        return $this->redirectToRoute('author_list');
+   #[Route('authors/remove/{id}', name: 'remove_author')]
+public function remove(AuthorRepository $repo, $id, EntityManagerInterface $em): Response
+{
+    $author = $repo->find($id);
+
+    if (!$author) {
+        throw $this->createNotFoundException('Author not found');
     }
 
-    #[Route('/edit/{id}', name: 'edit', methods: ['GET', 'POST'])]
+    // Get all books associated with the author
+    $books = $author->getBooks();
+
+    // Delete the associated books
+    foreach ($books as $book) {
+        $em->remove($book);
+    }
+
+    // Finally, remove the author
+    $em->remove($author);
+    $em->flush();
+
+    return $this->redirectToRoute('author_list');
+}
+
+
+    #[Route('authors/edit/{id}', name: 'edit_author', methods: ['GET', 'POST'])]
     public function edit(ManagerRegistry $mr, AuthorRepository $repo, $id, Request $request): Response {
         $author = $repo->find($id);
         $form = $this->createForm(AuthorType::class, $author);
@@ -84,5 +101,29 @@ class AuthorController extends AbstractController
         return $this->render('author/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/authors/remove-empty', name: 'author_remove_empty')]
+    public function removeEmptyAuthors(EntityManagerInterface $entityManager): Response
+    {
+        $authorRepository = $entityManager->getRepository(Author::class);
+        $bookRepository = $entityManager->getRepository(Book::class);
+    
+        // Find authors with nb_books equal to zero
+        $emptyAuthors = $authorRepository->findBy(['nb_books' => 0]);
+    
+        foreach ($emptyAuthors as $author) {
+            // Find and remove books associated with the author
+            $associatedBooks = $bookRepository->findBy(['author' => $author]);
+            foreach ($associatedBooks as $book) {
+                $entityManager->remove($book);
+            }
+    
+            // Remove the author
+            $entityManager->remove($author);
+        }
+    
+        $entityManager->flush();
+    
+        return $this->redirectToRoute('author_list');
     }
 }

@@ -15,8 +15,8 @@
                     <td>{{ author.username }}</td>
                     <td>{{ author.email }}</td>
                     <td>
-                        <a href="{{ path('edit', {'id': author.id}) }}" class="btn btn-primary">edit</a>
-                        <a href="{{ path('remove', {'id': author.id}) }}" class="btn btn-primary">delete</a>
+                        <a href="{{ path('edit_author', {'id': author.id}) }}" class="btn btn-primary">edit</a>
+                        <a href="{{ path('remove_author', {'id': author.id}) }}" class="btn btn-primary">delete</a>
 
                 </tr>
             {% endfor %}

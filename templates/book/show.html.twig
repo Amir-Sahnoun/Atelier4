@@ -1,0 +1,16 @@
+<h1>Book Details</h1>
+    <dl>
+        <dt>Title:{{ book.title }}</dt>
+    
+
+        <dt>Category:{{ book.category }}</dt>
+   
+
+        <dt>Publication Date:{{ book.publicationDate|date("Y-m-d") }}</dt>
+
+
+
+        <dt>Author:{{ book.author.username }}</dt>
+  
+    </dl>
+    <a href="{{ path('book_list') }}" class="btn btn-primary">Back to Book List</a>
