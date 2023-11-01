@@ -94,4 +94,69 @@ public function showBook(Book $book): Response
         'book' => $book,
     ]);
 }
+public function searchBooks(Request $request, BookRepository $bookRepository)
+    {
+        $ref = $request->query->get('ref'); // Récupérer la référence depuis la requête GET
+
+        if ($ref) {
+            $books = $bookRepository->searchBookByRef($ref);
+        } else {
+            $books = []; // Aucune référence spécifiée, retourner un tableau vide ou un message d'erreur
+        }
+
+        return $this->render('book/search.html.twig', [
+            'books' => $books,
+        ]);
+    }
+
+    public function listBooksByAuthors(BookRepository $bookRepository)
+    { $allBooks = $bookRepository->findAll();
+        $publishedBooks = $bookRepository->findPublishedBooksByAuthors(); // Modify the repository method accordingly
+        $nonPublishedBooksCount = count($allBooks) - count($publishedBooks);
+
+        return $this->render('book/books.html.twig', [
+            'publishedBooks' => $publishedBooks,
+            'nonPublishedBooksCount' => $nonPublishedBooksCount,
+        ]);
+    }    
+
+    public function listBooksBefore2023WithMoreThan10Books(BookRepository $bookRepository): Response
+    {
+        $allBooks = $bookRepository->findAll();
+        $publishedBooks = $bookRepository->findPublishedBooksBefore2023WithMoreThan10Books(); // Modify the repository method accordingly
+        $nonPublishedBooksCount = count($allBooks) - count($publishedBooks);
+
+
+        return $this->render('book/books.html.twig', [
+            'publishedBooks' => $publishedBooks,
+            'nonPublishedBooksCount' => $nonPublishedBooksCount,
+        ]);
+    }
+
+    public function updateScienceFictionToRomance(BookRepository $bookRepository): Response
+    {
+        $updatedCount = $bookRepository->updateScienceFictionToRomance();
+
+        return new Response(sprintf('Updated %d books from "Science-Fiction" to "Romance".', $updatedCount));
+    }
+
+    public function countBooksInRomanceCategory(BookRepository $bookRepository): Response
+    {
+        $count = $bookRepository->countBooksInRomanceCategory();
+
+        return new Response(sprintf('The number of books in the "Romance" category is %d.', $count));
+    }
+
+    public function listBooksPublishedBetweenDates(BookRepository $bookRepository): Response
+    {
+        $allBooks = $bookRepository->findAll();
+        $publishedBooks = $bookRepository->findBooksPublishedBetweenDates(); // Modify the repository method accordingly
+        $nonPublishedBooksCount = count($allBooks) - count($publishedBooks);
+
+
+        return $this->render('book/books.html.twig', [
+            'publishedBooks' => $publishedBooks,
+            'nonPublishedBooksCount' => $nonPublishedBooksCount,
+        ]);
+    }
 }

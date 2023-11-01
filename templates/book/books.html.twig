@@ -1,4 +1,8 @@
 <h1>List of Published Books</h1>
+<form method="GET" action="{{ path('search_books') }}">
+    <input type="text" name="ref" placeholder="Rechercher par référence">
+    <button type="submit">Rechercher</button>
+</form>
 
 <table class="table" border=1>
     <thead>

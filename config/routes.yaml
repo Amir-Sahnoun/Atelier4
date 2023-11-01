@@ -23,3 +23,39 @@ book_add:
 book_list:
     path: /books
     controller: App\Controller\BookController::fetchBooks
+
+list_authors_by_email:
+    path: /authors-by-email
+    controller: App\Controller\AuthorController::listAuthorsByEmail
+
+search_books:
+    path: /search-books
+    controller: App\Controller\BookController::searchBooks
+
+books_list_by_authors:
+    path: /books-list-by-authors
+    controller: App\Controller\BookController::listBooksByAuthors
+
+list_books_before_2023_with_more_than_10_books:
+    path: /books-before-2023-more-than-10
+    controller: App\Controller\BookController::listBooksBefore2023WithMoreThan10Books
+
+update_books_category:
+    path: /update-books-category
+    controller: App\Controller\BookController::updateScienceFictionToRomance
+
+count_books_in_romance_category:
+    path: /count-books-in-romance-category
+    controller: App\Controller\BookController::countBooksInRomanceCategory
+
+list_books_published_between_dates:
+    path: /list-books-published-between-dates
+    controller: App\Controller\BookController::listBooksPublishedBetweenDates
+
+search_authors_by_book_count:
+    path: /search-authors-by-book-count
+    controller: App\Controller\AuthorController::searchAuthorsByBookCount
+
+delete_authors_with_no_books:
+    path: /delete-authors-with-no-books
+    controller: App\Controller\AuthorController::deleteAuthorsWithNoBooks

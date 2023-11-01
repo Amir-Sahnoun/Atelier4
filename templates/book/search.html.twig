@@ -1,0 +1,32 @@
+{% if books is empty %}
+    <p>No books found.</p>
+{% else %}
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Publication Date</th>
+                <th>Published</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publicationDate|date("Y-m-d") }}</td>
+                    <td>{{ book.published ? 'Yes' : 'No' }}</td>
+                    <td>{{ book.category }}</td>
+                    <td>{{ book.author.username }}</td>
+                    <td>
+                        <a href="{{ path('edit', {'id': book.id}) }}" class="btn btn-primary">edit</a>
+                        <a href="{{ path('book_remove', {'id': book.id}) }}" class="btn btn-primary">delete</a>
+                        <a href="{{ path('book_show', {'id': book.id}) }}" class="btn btn-primary">show</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

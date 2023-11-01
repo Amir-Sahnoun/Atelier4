@@ -126,4 +126,31 @@ public function remove(AuthorRepository $repo, $id, EntityManagerInterface $em):
     
         return $this->redirectToRoute('author_list');
     }
+    public function listAuthorsByEmail(AuthorRepository $authorRepository)
+    {
+        $authors = $authorRepository->listAuthorByEmail();
+
+        return $this->render('author/list.html.twig', [
+            'authors' => $authors,
+        ]);
+    }
+
+    public function searchAuthorsByBookCount(Request $request, AuthorRepository $authorRepository): Response
+    {
+        $minBooks = $request->query->get('minBooks');
+        $maxBooks = $request->query->get('maxBooks');
+
+        $authors = $authorRepository->findAuthorsByBookCount($minBooks, $maxBooks);
+
+        return $this->render('author/list.html.twig', [
+            'authors' => $authors,
+        ]);
+    }
+
+    public function deleteAuthorsWithNoBooks(AuthorRepository $authorRepository): Response
+    {
+        $authorRepository->deleteAuthorsWithNoBooks();
+
+        return $this->redirectToRoute('author_list'); // Redirect to the list of authors or any other route.
+    }
 }

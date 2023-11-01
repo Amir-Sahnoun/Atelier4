@@ -1,11 +1,24 @@
 
     <h1>List of Authors</h1>
-    
+    <form action="{{ path('search_authors_by_book_count') }}" method="get">
+    <div>
+        <label for="minBooks">Min Books:</label>
+        <input type="number" name="minBooks" id="minBooks" value="{{ app.request.get('minBooks') }}">
+    </div>
+    <div>
+        <label for="maxBooks">Max Books:</label>
+        <input type="number" name="maxBooks" id="maxBooks" value="{{ app.request.get('maxBooks') }}">
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
     <table class="table" border=1>
         <thead>
             <tr>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Number of books</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -14,6 +27,7 @@
                 <tr>
                     <td>{{ author.username }}</td>
                     <td>{{ author.email }}</td>
+                    <td>{{ author.books|length }}</td>
                     <td>
                         <a href="{{ path('edit_author', {'id': author.id}) }}" class="btn btn-primary">edit</a>
                         <a href="{{ path('remove_author', {'id': author.id}) }}" class="btn btn-primary">delete</a>
